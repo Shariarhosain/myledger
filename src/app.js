@@ -9,6 +9,7 @@ const { errorHandler } = require('./utils/error');
 // Import routes
 const authRoutes = require('./Routes/authRoutes');
 const userRoutes = require('./Routes/userRoutes');
+const tradeRoutes = require('./Routes/tradeRoutes');
 
 const app = express();
 
@@ -71,6 +72,7 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/trades', tradeRoutes);
 
 // 404 handler
 app.use((req, res) => {

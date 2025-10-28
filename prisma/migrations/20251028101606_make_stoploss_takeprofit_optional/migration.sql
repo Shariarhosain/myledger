@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "trades" ALTER COLUMN "stopLoss" DROP NOT NULL,
+ALTER COLUMN "takeProfit" DROP NOT NULL;

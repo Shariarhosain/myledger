@@ -1,0 +1,269 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Trade API",
+  "dateExported": "2025-10-28",
+  "version": "1.1",
+  "folders": [
+    {
+      "name": "Trades",
+      "requests": [
+        {
+          "name": "Create Trade",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/trades",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"date\": \"2025-10-28\",\n  \"time\": \"09:30:00\",\n  \"ticker\": \"NQ\",\n  \"direction\": \"Long\",\n  \"entryPrice\": 16000,\n  \"exitPrice\": 16100,\n  \"stopLoss\": 15950,\n  \"takeProfit\": 16150,\n  \"quantity\": 1,\n  \"notes\": \"Strong breakout pattern\"\n}"
+          }
+        },
+        {
+          "name": "Get All Trades",
+          "method": "GET",
+          "url": "{{baseUrl}}/api/trades",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            }
+          ]
+        },
+        {
+          "name": "Get Single Trade",
+          "method": "GET",
+          "url": "{{baseUrl}}/api/trades/{{tradeId}}",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            }
+          ]
+        },
+        {
+          "name": "Update Trade",
+          "method": "PUT",
+          "url": "{{baseUrl}}/api/trades/{{tradeId}}",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"exitPrice\": 16150,\n  \"notes\": \"Updated exit price\"\n}"
+          }
+        },
+        {
+          "name": "Delete Trade",
+          "method": "DELETE",
+          "url": "{{baseUrl}}/api/trades/{{tradeId}}",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            }
+          ]
+        },
+        {
+          "name": "Get Dashboard Stats",
+          "method": "GET",
+          "url": "{{baseUrl}}/api/trades/dashboard",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sample Trade Scenarios",
+      "requests": [
+        {
+          "name": "Create Long Trade (Win)",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/trades",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"date\": \"2025-10-28\",\n  \"time\": \"09:30:00\",\n  \"ticker\": \"NQ\",\n  \"direction\": \"Long\",\n  \"entryPrice\": 16000,\n  \"exitPrice\": 16100,\n  \"stopLoss\": 15950,\n  \"takeProfit\": 16150,\n  \"quantity\": 1,\n  \"notes\": \"Morning breakout - WIN\"\n}"
+          }
+        },
+        {
+          "name": "Create Short Trade (Win)",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/trades",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"date\": \"2025-10-28\",\n  \"time\": \"14:30:00\",\n  \"ticker\": \"NQ\",\n  \"direction\": \"Short\",\n  \"entryPrice\": 16100,\n  \"exitPrice\": 16050,\n  \"stopLoss\": 16150,\n  \"takeProfit\": 16000,\n  \"quantity\": 1,\n  \"notes\": \"Afternoon reversal - WIN\"\n}"
+          }
+        },
+        {
+          "name": "Create Long Trade (Loss)",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/trades",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"date\": \"2025-10-28\",\n  \"time\": \"10:15:00\",\n  \"ticker\": \"NQ\",\n  \"direction\": \"Long\",\n  \"entryPrice\": 16000,\n  \"exitPrice\": 15950,\n  \"stopLoss\": 15950,\n  \"takeProfit\": 16150,\n  \"quantity\": 1,\n  \"notes\": \"Hit stop loss - LOSS\"\n}"
+          }
+        },
+        {
+          "name": "Create Short Trade (Loss)",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/trades",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"date\": \"2025-10-28\",\n  \"time\": \"15:00:00\",\n  \"ticker\": \"NQ\",\n  \"direction\": \"Short\",\n  \"entryPrice\": 16000,\n  \"exitPrice\": 16050,\n  \"stopLoss\": 16050,\n  \"takeProfit\": 15900,\n  \"quantity\": 1,\n  \"notes\": \"Hit stop loss - LOSS\"\n}"
+          }
+        },
+        {
+          "name": "Create Trade with Multiple Contracts",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/trades",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"date\": \"2025-10-28\",\n  \"time\": \"11:00:00\",\n  \"ticker\": \"ES\",\n  \"direction\": \"Long\",\n  \"entryPrice\": 4500,\n  \"exitPrice\": 4520,\n  \"stopLoss\": 4490,\n  \"takeProfit\": 4550,\n  \"quantity\": 5,\n  \"notes\": \"5 contracts - scaling in\"\n}"
+          }
+        },
+        {
+          "name": "Create Evening Trade (PM)",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/trades",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"date\": \"2025-10-28\",\n  \"time\": \"18:30:00\",\n  \"ticker\": \"NQ\",\n  \"direction\": \"Short\",\n  \"entryPrice\": 16200,\n  \"exitPrice\": 16150,\n  \"stopLoss\": 16250,\n  \"takeProfit\": 16100,\n  \"quantity\": 2,\n  \"notes\": \"Evening session trade\"\n}"
+          }
+        },
+        {
+          "name": "Create Trade Without Stop/Target",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/trades",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"date\": \"2025-10-28\",\n  \"time\": \"13:00:00\",\n  \"ticker\": \"NQ\",\n  \"direction\": \"Long\",\n  \"entryPrice\": 16000,\n  \"exitPrice\": 16075,\n  \"quantity\": 1,\n  \"notes\": \"Quick scalp - no stops set\"\n}"
+          }
+        }
+      ]
+    }
+  ],
+  "environments": [
+    {
+      "name": "Local",
+      "variables": [
+        {
+          "name": "baseUrl",
+          "value": "http://localhost:5000"
+        },
+        {
+          "name": "accessToken",
+          "value": "your_jwt_token_here"
+        },
+        {
+          "name": "tradeId",
+          "value": "trade_uuid_here"
+        }
+      ]
+    },
+    {
+      "name": "Production",
+      "variables": [
+        {
+          "name": "baseUrl",
+          "value": "https://therellwalker.mtscorporate.com"
+        },
+        {
+          "name": "accessToken",
+          "value": "your_jwt_token_here"
+        },
+        {
+          "name": "tradeId",
+          "value": "trade_uuid_here"
+        }
+      ]
+    }
+  ]
+}

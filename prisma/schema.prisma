@@ -23,6 +23,7 @@ model User {
   isVerified Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  trades    Trade[]  // Relation to trades
 
   @@map("users")
 }
@@ -37,4 +38,27 @@ model EmailVerification {
 
   @@index([email])
   @@map("email_verifications")
+}
+
+model Trade {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        String   // Date in string format
+  time        String   // Time in string format
+  period      String   // AM or PM
+  ticker      String   // e.g., 'NQ'
+  direction   String   // 'Long' or 'Short'
+  entryPrice  Float
+  exitPrice   Float
+  stopLoss    Float?   // Optional
+  takeProfit  Float?   // Optional
+  quantity    Int      @default(1)
+  notes       String?
+  pnl         Float    // Profit and Loss
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@map("trades")
 }
