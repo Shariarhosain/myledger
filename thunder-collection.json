@@ -1,0 +1,161 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Therellwalker Backend API",
+  "dateExported": "2024-10-28",
+  "version": "1.1",
+  "folders": [
+    {
+      "name": "Authentication",
+      "requests": [
+        {
+          "name": "Send Email OTP",
+          "method": "POST",
+          "url": "http://localhost:5000/api/auth/send-otp",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"email\": \"test@example.com\"\n}"
+          }
+        },
+        {
+          "name": "Verify Email OTP",
+          "method": "POST",
+          "url": "http://localhost:5000/api/auth/verify-otp",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"email\": \"test@example.com\",\n  \"otp\": \"123456\"\n}"
+          }
+        },
+        {
+          "name": "Register",
+          "method": "POST",
+          "url": "http://localhost:5000/api/auth/register",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"fname\": \"John\",\n  \"lname\": \"Doe\",\n  \"email\": \"test@example.com\",\n  \"password\": \"Pass123!\"\n}"
+          }
+        },
+        {
+          "name": "Login",
+          "method": "POST",
+          "url": "http://localhost:5000/api/auth/login",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"Pass123!\"\n}"
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "method": "POST",
+          "url": "http://localhost:5000/api/auth/forgot-password",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"NewPass123!\"\n}"
+          }
+        },
+        {
+          "name": "Logout",
+          "method": "POST",
+          "url": "http://localhost:5000/api/auth/logout"
+        }
+      ]
+    },
+    {
+      "name": "Users (Protected)",
+      "requests": [
+        {
+          "name": "Get Current User Profile",
+          "method": "GET",
+          "url": "http://localhost:5000/api/users/profile",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_TOKEN_HERE"
+            }
+          ]
+        },
+        {
+          "name": "Get All Users",
+          "method": "GET",
+          "url": "http://localhost:5000/api/users?page=1&limit=10",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_TOKEN_HERE"
+            }
+          ]
+        },
+        {
+          "name": "Get User by ID",
+          "method": "GET",
+          "url": "http://localhost:5000/api/users/USER_ID_HERE",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_TOKEN_HERE"
+            }
+          ]
+        },
+        {
+          "name": "Update User",
+          "method": "PUT",
+          "url": "http://localhost:5000/api/users/USER_ID_HERE",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_TOKEN_HERE"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"fname\": \"Jane\",\n  \"lname\": \"Smith\",\n  \"email\": \"newemail@example.com\"\n}"
+          }
+        },
+        {
+          "name": "Delete User",
+          "method": "DELETE",
+          "url": "http://localhost:5000/api/users/USER_ID_HERE",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_TOKEN_HERE"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

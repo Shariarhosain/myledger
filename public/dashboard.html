@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Therellwalker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <nav class="bg-white rounded-lg shadow-md p-4 mb-8">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-800">🎉 Dashboard</h1>
+                <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
+                    Logout
+                </button>
+            </div>
+        </nav>
+
+        <!-- Welcome Card -->
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-2xl p-8 text-white mb-8">
+                <h2 class="text-3xl font-bold mb-4">Welcome back!</h2>
+                <p class="text-lg opacity-90" id="welcome-message">Loading your profile...</p>
+            </div>
+
+            <!-- User Info Card -->
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">👤 Your Profile</h3>
+                <div id="user-info" class="space-y-4">
+                    <div class="animate-pulse">
+                        <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                        <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Token Card -->
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">🔑 Your Token</h3>
+                <div class="bg-gray-50 rounded-lg p-4 break-all text-sm font-mono">
+                    <div id="token-display" class="text-gray-600">Loading token...</div>
+                </div>
+                <button onclick="copyToken()" class="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+                    📋 Copy Token
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000';
+
+        // Load user data on page load
+        window.onload = function() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            const token = localStorage.getItem('authToken');
+
+            if (!user || !token) {
+                // No user data, redirect to sign in
+                alert('Please sign in first');
+                window.location.href = './google-signin.html';
+                return;
+            }
+
+            // Display user info
+            document.getElementById('welcome-message').textContent = 
+                `Welcome, ${user.fname} ${user.lname}!`;
+
+            document.getElementById('user-info').innerHTML = `
+                <div class="flex items-center space-x-4 pb-4 border-b">
+                    <div class="bg-gradient-to-br from-blue-400 to-purple-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold">
+                        ${user.fname.charAt(0)}${user.lname.charAt(0)}
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold text-gray-800">${user.fname} ${user.lname}</h4>
+                        <p class="text-gray-600">${user.email}</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                    <div>
+                        <p class="text-sm text-gray-500">User ID</p>
+                        <p class="font-mono text-sm text-gray-800">${user.id}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Verified</p>
+                        <p class="font-semibold ${user.isVerified ? 'text-green-600' : 'text-red-600'}">
+                            ${user.isVerified ? '✅ Verified' : '❌ Not Verified'}
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Created At</p>
+                        <p class="text-sm text-gray-800">${new Date(user.createdAt).toLocaleString()}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Provider</p>
+                        <p class="text-sm text-gray-800">${user.googleId ? '🔐 Google' : '📧 Email'}</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('token-display').textContent = token;
+        };
+
+        function copyToken() {
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                navigator.clipboard.writeText(token).then(() => {
+                    alert('✅ Token copied to clipboard!');
+                }).catch(err => {
+                    alert('Failed to copy token');
+                    console.error('Copy error:', err);
+                });
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('user');
+                window.location.href = './google-signin.html';
+            }
+        }
+    </script>
+</body>
+</html>
