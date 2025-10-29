@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const path = require('path');
 const passport = require('./config/passport');
 const { errorHandler } = require('./utils/error');
 
@@ -43,6 +44,9 @@ app.use(cookieParser());
 
 // Serve static files from public directory
 app.use(express.static('public'));
+
+// Serve static files from uploads directory
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Session configuration for passport
 app.use(

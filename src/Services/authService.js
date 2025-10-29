@@ -108,6 +108,7 @@ class AuthService {
         fname: true,
         lname: true,
         email: true,
+        profilePic: true,
         isVerified: true,
         createdAt: true,
       },
@@ -149,6 +150,7 @@ class AuthService {
   async googleAuth(profile) {
     const email = profile.emails[0].value;
     const googleId = profile.id;
+    const profilePic = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
 
     // Check if user exists
     let user = await prisma.user.findFirst({
@@ -158,11 +160,19 @@ class AuthService {
     });
 
     if (user) {
-      // Update googleId if not set
+      // Update googleId and profilePic if not set
+      const updateData = {};
       if (!user.googleId) {
+        updateData.googleId = googleId;
+      }
+      if (!user.profilePic && profilePic) {
+        updateData.profilePic = profilePic;
+      }
+
+      if (Object.keys(updateData).length > 0) {
         user = await prisma.user.update({
           where: { id: user.id },
-          data: { googleId },
+          data: updateData,
         });
       }
     } else {
@@ -173,6 +183,7 @@ class AuthService {
           lname: profile.name.familyName,
           email,
           googleId,
+          profilePic,
           isVerified: true, // Google accounts are pre-verified
         },
       });
@@ -197,7 +208,7 @@ class AuthService {
       });
 
       const payload = ticket.getPayload();
-      const { email, given_name, family_name, sub: googleId } = payload;
+      const { email, given_name, family_name, sub: googleId, picture } = payload;
 
       // Check if user already exists
       const existingUser = await prisma.user.findFirst({
@@ -217,6 +228,7 @@ class AuthService {
           lname: family_name || '',
           email,
           googleId,
+          profilePic: picture || null,
           isVerified: true, // Google accounts are pre-verified
         },
         select: {
@@ -225,6 +237,7 @@ class AuthService {
           lname: true,
           email: true,
           googleId: true,
+          profilePic: true,
           isVerified: true,
           createdAt: true,
         },
@@ -256,7 +269,7 @@ class AuthService {
       });
 
       const payload = ticket.getPayload();
-      const { email, sub: googleId } = payload;
+      const { email, sub: googleId, picture } = payload;
 
       // Find user by email or googleId
       const user = await prisma.user.findFirst({
@@ -269,6 +282,7 @@ class AuthService {
           lname: true,
           email: true,
           googleId: true,
+          profilePic: true,
           isVerified: true,
           createdAt: true,
           updatedAt: true,
@@ -279,11 +293,19 @@ class AuthService {
         throw new ApiError(404, 'User not found. Please sign up first.');
       }
 
-      // Update googleId if not set
+      // Update googleId and profilePic if not set
+      const updateData = {};
       if (!user.googleId && googleId) {
+        updateData.googleId = googleId;
+      }
+      if (!user.profilePic && picture) {
+        updateData.profilePic = picture;
+      }
+
+      if (Object.keys(updateData).length > 0) {
         await prisma.user.update({
           where: { id: user.id },
-          data: { googleId },
+          data: updateData,
         });
       }
 

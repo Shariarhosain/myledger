@@ -50,12 +50,13 @@ class UserController {
   // Update user
   async updateUser(req, res, next) {
     try {
-      const { id } = req.params;
+      const id = req.user.id;
       const updateData = req.body;
 
-      // Users can only update their own profile unless they're admin
-      if (req.user.id !== id) {
-        throw new ApiError(403, 'You can only update your own profile');
+      // If profile picture is uploaded, add the URL to updateData
+      if (req.file) {
+        const baseUrl = process.env.BASE_URL || 'https://backend-therellwalker.mtscorporate.com';
+        updateData.profilePic = `${baseUrl}/uploads/profiles/${req.file.filename}`;
       }
 
       const user = await userService.updateUser(id, updateData);

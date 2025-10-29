@@ -18,6 +18,7 @@ class UserService {
           fname: true,
           lname: true,
           email: true,
+          profilePic: true,
           isVerified: true,
           googleId: true,
           createdAt: true,
@@ -50,6 +51,7 @@ class UserService {
         fname: true,
         lname: true,
         email: true,
+        profilePic: true,
         isVerified: true,
         googleId: true,
         createdAt: true,
@@ -66,7 +68,7 @@ class UserService {
 
   // Update user
   async updateUser(id, updateData) {
-    const { fname, lname, email, password } = updateData;
+    const { fname, lname, email, password, profilePic } = updateData;
 
     // Check if user exists
     const existingUser = await prisma.user.findUnique({
@@ -93,6 +95,7 @@ class UserService {
     if (fname) data.fname = fname;
     if (lname) data.lname = lname;
     if (email) data.email = email;
+    if (profilePic !== undefined) data.profilePic = profilePic;
     if (password) {
       data.password = await bcrypt.hash(password, 10);
     }
@@ -106,6 +109,7 @@ class UserService {
         fname: true,
         lname: true,
         email: true,
+        profilePic: true,
         isVerified: true,
         googleId: true,
         createdAt: true,
