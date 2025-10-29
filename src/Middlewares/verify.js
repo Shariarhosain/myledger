@@ -22,6 +22,7 @@ const authenticate = async (req, res, next) => {
         fname: true,
         lname: true,
         email: true,
+        profilePic: true,
         isVerified: true,
         createdAt: true,
       },
