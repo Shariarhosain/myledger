@@ -23,7 +23,8 @@ app.use(cors({
       'http://localhost:5173',
       'http://localhost:3000',
       'https://therellwalker.mtscorporate.com',
-      'https://backend-therellwalker.mtscorporate.com'
+      'https://backend-therellwalker.mtscorporate.com',
+      'https://myledger.mtscorporate.com'
     ].filter(Boolean); // Remove undefined/null values
     
     // Allow requests with no origin (like mobile apps or curl requests)
