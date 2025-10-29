@@ -1,0 +1,171 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Reflections API",
+  "dateExported": "2025-10-29T09:56:00.000Z",
+  "version": "1.1",
+  "folders": [
+    {
+      "name": "Reflections",
+      "requests": [
+        {
+          "name": "Create Reflection",
+          "method": "POST",
+          "url": "{{base_url}}/api/reflections",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{auth_token}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"date\": \"10/29/2025, 09:55:09 AM\",\n  \"prompt\": \"Were you confident or doubtful when placing trades?\",\n  \"group\": \"MINDSET & CONFIDENCE\",\n  \"answer\": \"Today I felt very confident in my trading decisions. I followed my plan and waited for proper setups before entering.\"\n}"
+          }
+        },
+        {
+          "name": "Get All Reflections",
+          "method": "GET",
+          "url": "{{base_url}}/api/reflections",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{auth_token}}"
+            }
+          ],
+          "params": [
+            {
+              "name": "page",
+              "value": "1"
+            },
+            {
+              "name": "limit",
+              "value": "10"
+            }
+          ]
+        },
+        {
+          "name": "Get Reflection by ID",
+          "method": "GET",
+          "url": "{{base_url}}/api/reflections/{{reflection_id}}",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{auth_token}}"
+            }
+          ]
+        },
+        {
+          "name": "Update Reflection",
+          "method": "PUT",
+          "url": "{{base_url}}/api/reflections/{{reflection_id}}",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{auth_token}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"answer\": \"Updated reflection: I realized I need to work more on my patience when waiting for trade setups.\"\n}"
+          }
+        },
+        {
+          "name": "Delete Reflection",
+          "method": "DELETE",
+          "url": "{{base_url}}/api/reflections/{{reflection_id}}",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{auth_token}}"
+            }
+          ]
+        },
+        {
+          "name": "Get Reflection Stats",
+          "method": "GET",
+          "url": "{{base_url}}/api/reflections/stats",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{auth_token}}"
+            }
+          ]
+        },
+        {
+          "name": "Get Rotation State",
+          "method": "GET",
+          "url": "{{base_url}}/api/reflections/rotation-state",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{auth_token}}"
+            }
+          ]
+        },
+        {
+          "name": "Update Rotation State",
+          "method": "PUT",
+          "url": "{{base_url}}/api/reflections/rotation-state",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{auth_token}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"currentGroupIndex\": 2,\n  \"promptIndexes\": [3, 1, 2, 0]\n}"
+          }
+        }
+      ]
+    }
+  ],
+  "environments": [
+    {
+      "name": "Development",
+      "variables": [
+        {
+          "name": "base_url",
+          "value": "http://localhost:5000"
+        },
+        {
+          "name": "auth_token",
+          "value": "your_jwt_token_here"
+        },
+        {
+          "name": "reflection_id",
+          "value": "reflection_uuid_here"
+        }
+      ]
+    },
+    {
+      "name": "Production",
+      "variables": [
+        {
+          "name": "base_url",
+          "value": "https://therellwalker.mtscorporate.com"
+        },
+        {
+          "name": "auth_token",
+          "value": "your_jwt_token_here"
+        },
+        {
+          "name": "reflection_id",
+          "value": "reflection_uuid_here"
+        }
+      ]
+    }
+  ]
+}

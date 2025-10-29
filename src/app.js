@@ -10,6 +10,7 @@ const { errorHandler } = require('./utils/error');
 const authRoutes = require('./Routes/authRoutes');
 const userRoutes = require('./Routes/userRoutes');
 const tradeRoutes = require('./Routes/tradeRoutes');
+const reflectionRoutes = require('./Routes/reflectionRoutes');
 
 const app = express();
 
@@ -73,6 +74,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/trades', tradeRoutes);
+app.use('/api/reflections', reflectionRoutes);
 
 // 404 handler
 app.use((req, res) => {

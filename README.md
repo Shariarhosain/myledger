@@ -11,6 +11,8 @@ A complete authentication system with email verification, Google OAuth 2.0, and 
 ✅ JWT Token Authentication  
 ✅ Forgot Password  
 ✅ User CRUD Operations  
+✅ Trade Management System  
+✅ **Reflections & Journaling** ⭐ NEW  
 ✅ Protected Routes  
 
 ## Tech Stack
@@ -554,6 +556,61 @@ token: (will be set after login)
 
 ---
 
+## Reflection Routes (Protected) ⭐ NEW
+
+All reflection routes require authentication. Include JWT token in header:
+```
+Authorization: Bearer your-jwt-token
+```
+
+### Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/reflections` | Create new reflection |
+| GET | `/api/reflections` | Get all reflections |
+| GET | `/api/reflections/:id` | Get single reflection |
+| PUT | `/api/reflections/:id` | Update reflection |
+| DELETE | `/api/reflections/:id` | Delete reflection |
+| GET | `/api/reflections/stats` | Get statistics |
+| GET | `/api/reflections/rotation-state` | Get rotation state |
+| PUT | `/api/reflections/rotation-state` | Update rotation state |
+
+### Example: Create Reflection
+
+**Request:**
+```json
+POST /api/reflections
+{
+  "date": "10/29/2025, 09:55:09 AM",
+  "prompt": "Were you confident or doubtful when placing trades?",
+  "group": "MINDSET & CONFIDENCE",
+  "answer": "Today I felt very confident in my trading decisions..."
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Reflection created successfully",
+  "data": {
+    "id": "uuid",
+    "userId": "user-uuid",
+    "date": "10/29/2025, 09:55:09 AM",
+    "prompt": "Were you confident or doubtful when placing trades?",
+    "group": "MINDSET & CONFIDENCE",
+    "answer": "Today I felt very confident...",
+    "createdAt": "2025-10-29T09:55:09.000Z",
+    "updatedAt": "2025-10-29T09:55:09.000Z"
+  }
+}
+```
+
+📚 **Full Documentation:** See [`REFLECTION_API_DOCUMENTATION.md`](./REFLECTION_API_DOCUMENTATION.md) for complete API reference.
+
+---
+
 ## Project Structure
 
 ```
@@ -564,21 +621,31 @@ therellwalker_backend/
 │   ├── config/
 │   │   └── passport.js        # Google OAuth configuration
 │   ├── Controllers/
-│   │   ├── authController.js  # Auth endpoints
-│   │   └── userController.js  # User CRUD endpoints
+│   │   ├── authController.js     # Auth endpoints
+│   │   ├── userController.js     # User CRUD endpoints
+│   │   ├── tradeController.js    # Trade endpoints
+│   │   └── reflectionController.js  # Reflection endpoints ⭐
 │   ├── Middlewares/
 │   │   ├── jwt.js            # JWT utilities
 │   │   └── verify.js         # Auth middleware
 │   ├── Routes/
 │   │   ├── authRoutes.js     # Auth routes
-│   │   └── userRoutes.js     # User routes
+│   │   ├── userRoutes.js     # User routes
+│   │   ├── tradeRoutes.js    # Trade routes
+│   │   └── reflectionRoutes.js  # Reflection routes ⭐
 │   ├── Services/
-│   │   ├── authService.js    # Auth business logic
-│   │   └── userService.js    # User business logic
+│   │   ├── authService.js       # Auth business logic
+│   │   ├── userService.js       # User business logic
+│   │   ├── tradeService.js      # Trade business logic
+│   │   └── reflectionService.js # Reflection business logic ⭐
 │   ├── utils/
 │   │   ├── email.js          # Email utilities
 │   │   └── error.js          # Error handling
 │   └── app.js                # Main application file
+├── REFLECTION_API_DOCUMENTATION.md    # Reflection API docs ⭐
+├── REFLECTION_COMPLETE_GUIDE.md       # Complete guide ⭐
+├── REFLECTION_TESTING_GUIDE.md        # Testing guide ⭐
+├── reflection-api-collection.json     # Thunder Client collection ⭐
 ├── .env                      # Environment variables
 └── package.json              # Dependencies
 ```
