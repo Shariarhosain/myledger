@@ -22,7 +22,8 @@ app.use(cors({
       process.env.FRONTEND_URL,
       'http://localhost:5173',
       'http://localhost:3000',
-      'https://therellwalker.mtscorporate.com'
+      'https://therellwalker.mtscorporate.com',
+      'https://backend-therellwalker.mtscorporate.com'
     ].filter(Boolean); // Remove undefined/null values
     
     // Allow requests with no origin (like mobile apps or curl requests)
