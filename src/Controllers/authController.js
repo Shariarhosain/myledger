@@ -40,6 +40,37 @@ class AuthController {
     }
   }
 
+  // Simple registration - no verification, no unique constraints
+  async simpleRegister(req, res, next) {
+    try {
+      const { username, email, password } = req.body;
+
+      if (!username || !email || !password) {
+        throw new ApiError(400, 'Username, email, and password are required');
+      }
+
+      const result = await authService.simpleRegister(username, email, password);
+      
+      // Set token in cookie
+      res.cookie('token', result.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      });
+
+      res.status(201).json({
+        success: true,
+        message: 'User registered successfully',
+        data: {
+          user: result.user,
+          token: result.token,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   // Register with email and password
   async register(req, res, next) {
     try {
@@ -55,7 +86,7 @@ class AuthController {
       res.cookie('token', result.token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       });
 
       res.status(201).json({
@@ -86,7 +117,7 @@ class AuthController {
       res.cookie('token', result.token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       });
 
       res.status(200).json({
@@ -113,7 +144,7 @@ class AuthController {
       res.cookie('token', req.user.token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       });
 
       // Redirect to frontend with token
@@ -171,7 +202,7 @@ class AuthController {
       res.cookie('token', result.token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       });
 
       res.status(201).json({
@@ -203,7 +234,7 @@ class AuthController {
       res.cookie('token', result.token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       });
 
       res.status(200).json({

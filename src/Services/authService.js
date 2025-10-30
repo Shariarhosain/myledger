@@ -74,6 +74,43 @@ class AuthService {
     return !!verification;
   }
 
+  // Simple registration - no email verification, no unique constraints
+  async simpleRegister(username, email, password) {
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    //only email uniqueness check
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
+    if (existingUser) {
+      throw new ApiError(400, 'User already exists with this email');
+    }
+
+    // Create user directly without any checks
+    const user = await prisma.user.create({
+      data: {
+        username,
+        email,
+        password: hashedPassword,
+        isVerified: true, // Not verified since we're skipping that step
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        profilePic: true,
+        isVerified: true,
+        createdAt: true,
+      },
+    });
+
+    // Generate token with updated signature
+    const token = generateToken(user.id, user.email, user.username);
+
+    return { user, token };
+  }
+
   // Register user with email and password
   async register(fname, lname, email, password) {
     // Check if email is verified
@@ -114,8 +151,8 @@ class AuthService {
       },
     });
 
-    // Generate token
-    const token = generateToken(user.id);
+    // Generate token with updated signature
+    const token = generateToken(user.id, user.email, null);
 
     return { user, token };
   }
@@ -137,8 +174,8 @@ class AuthService {
       throw new ApiError(401, 'Invalid email or password');
     }
 
-    // Generate token
-    const token = generateToken(user.id);
+    // Generate token with updated signature
+    const token = generateToken(user.id, user.email, user.username);
 
     // Return user without password
     const { password: _, ...userWithoutPassword } = user;
@@ -189,8 +226,8 @@ class AuthService {
       });
     }
 
-    // Generate token
-    const token = generateToken(user.id);
+    // Generate token with updated signature
+    const token = generateToken(user.id, user.email, user.username);
 
     // Return user without password
     const { password: _, ...userWithoutPassword } = user;
@@ -243,8 +280,8 @@ class AuthService {
         },
       });
 
-      // Generate JWT token
-      const token = generateToken(user.id);
+      // Generate JWT token with updated signature
+      const token = generateToken(user.id, user.email, null);
 
       return { 
         user, 
@@ -309,8 +346,8 @@ class AuthService {
         });
       }
 
-      // Generate JWT token
-      const token = generateToken(user.id);
+      // Generate JWT token with updated signature
+      const token = generateToken(user.id, user.email, user.username);
 
       return { 
         user, 

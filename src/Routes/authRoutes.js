@@ -7,6 +7,9 @@ const passport = require('../config/passport');
 router.post('/send-otp', authController.sendVerificationOTP);
 router.post('/verify-otp', authController.verifyOTP);
 
+// Simple registration (no verification, no unique constraints)
+router.post('/simple-register', authController.simpleRegister);
+
 // Register and login routes
 router.post('/register', authController.register);
 router.post('/login', authController.login);

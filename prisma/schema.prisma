@@ -15,9 +15,10 @@ datasource db {
 
 model User {
   id          String      @id @default(uuid())
-  fname       String
-  lname       String
-  email       String      @unique
+  username    String?     // Username field (optional)
+  fname       String?     // Made optional
+  lname       String?     // Made optional
+  email       String     @unique // Removed unique constraint
   password    String?     // Nullable for Google OAuth users
   googleId    String?     @unique // For Google OAuth
   profilePic  String?     // Profile picture URL
