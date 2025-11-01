@@ -248,25 +248,9 @@ class AuthService {
       const { email, given_name, family_name, sub: googleId, picture } = payload;
 
       // Check if user already exists
-      const existingUser = await prisma.user.findFirst({
+      let user = await prisma.user.findFirst({
         where: {
           OR: [{ email }, { googleId }],
-        },
-      });
-
-      if (existingUser) {
-        throw new ApiError(400, 'User already exists with this email or Google account');
-      }
-
-      // Create new user
-      const user = await prisma.user.create({
-        data: {
-          fname: given_name || 'User',
-          lname: family_name || '',
-          email,
-          googleId,
-          profilePic: picture || null,
-          isVerified: true, // Google accounts are pre-verified
         },
         select: {
           id: true,
@@ -277,16 +261,73 @@ class AuthService {
           profilePic: true,
           isVerified: true,
           createdAt: true,
+          updatedAt: true,
         },
       });
 
+      let isNewUser = false;
+
+      // If user already exists, log them in
+      if (user) {
+        // Update googleId and profilePic if not set
+        const updateData = {};
+        if (!user.googleId && googleId) {
+          updateData.googleId = googleId;
+        }
+        if (!user.profilePic && picture) {
+          updateData.profilePic = picture;
+        }
+
+        if (Object.keys(updateData).length > 0) {
+          user = await prisma.user.update({
+            where: { id: user.id },
+            data: updateData,
+            select: {
+              id: true,
+              fname: true,
+              lname: true,
+              email: true,
+              googleId: true,
+              profilePic: true,
+              isVerified: true,
+              createdAt: true,
+              updatedAt: true,
+            },
+          });
+        }
+      } else {
+        // Create new user
+        user = await prisma.user.create({
+          data: {
+            fname: given_name || 'User',
+            lname: family_name || '',
+            email,
+            googleId,
+            profilePic: picture || null,
+            isVerified: true, // Google accounts are pre-verified
+          },
+          select: {
+            id: true,
+            fname: true,
+            lname: true,
+            email: true,
+            googleId: true,
+            profilePic: true,
+            isVerified: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        });
+        isNewUser = true;
+      }
+
       // Generate JWT token with updated signature
-      const token = generateToken(user.id, user.email, null);
+      const token = generateToken(user.id, user.email, user.username);
 
       return { 
         user, 
         token,
-        isNewUser: true 
+        isNewUser 
       };
     } catch (error) {
       if (error.statusCode) {
@@ -306,10 +347,10 @@ class AuthService {
       });
 
       const payload = ticket.getPayload();
-      const { email, sub: googleId, picture } = payload;
+      const { email, given_name, family_name, sub: googleId, picture } = payload;
 
       // Find user by email or googleId
-      const user = await prisma.user.findFirst({
+      let user = await prisma.user.findFirst({
         where: {
           OR: [{ email }, { googleId }],
         },
@@ -326,24 +367,59 @@ class AuthService {
         },
       });
 
+      let isNewUser = false;
+
+      // If user not found, register them automatically
       if (!user) {
-        throw new ApiError(404, 'User not found. Please sign up first.');
-      }
-
-      // Update googleId and profilePic if not set
-      const updateData = {};
-      if (!user.googleId && googleId) {
-        updateData.googleId = googleId;
-      }
-      if (!user.profilePic && picture) {
-        updateData.profilePic = picture;
-      }
-
-      if (Object.keys(updateData).length > 0) {
-        await prisma.user.update({
-          where: { id: user.id },
-          data: updateData,
+        user = await prisma.user.create({
+          data: {
+            fname: given_name || 'User',
+            lname: family_name || '',
+            email,
+            googleId,
+            profilePic: picture || null,
+            isVerified: true, // Google accounts are pre-verified
+          },
+          select: {
+            id: true,
+            fname: true,
+            lname: true,
+            email: true,
+            googleId: true,
+            profilePic: true,
+            isVerified: true,
+            createdAt: true,
+            updatedAt: true,
+          },
         });
+        isNewUser = true;
+      } else {
+        // Update googleId and profilePic if not set
+        const updateData = {};
+        if (!user.googleId && googleId) {
+          updateData.googleId = googleId;
+        }
+        if (!user.profilePic && picture) {
+          updateData.profilePic = picture;
+        }
+
+        if (Object.keys(updateData).length > 0) {
+          user = await prisma.user.update({
+            where: { id: user.id },
+            data: updateData,
+            select: {
+              id: true,
+              fname: true,
+              lname: true,
+              email: true,
+              googleId: true,
+              profilePic: true,
+              isVerified: true,
+              createdAt: true,
+              updatedAt: true,
+            },
+          });
+        }
       }
 
       // Generate JWT token with updated signature
@@ -352,7 +428,7 @@ class AuthService {
       return { 
         user, 
         token,
-        isNewUser: false 
+        isNewUser 
       };
     } catch (error) {
       if (error.statusCode) {
