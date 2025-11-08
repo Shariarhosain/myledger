@@ -17,6 +17,8 @@ class TradeService {
       'MNQ': 2,    // Nasdaq 100 Micro
       'MES': 5,    // S&P 500 Micro
       'MYM': 0.5,  // Dow Jones Micro
+      'GC': 10,    // Gold
+      'MGC': 1,    // Micro Gold
     };
     return pointValues[ticker.toUpperCase()] || 1; // Default to 1 if ticker not found
   }
